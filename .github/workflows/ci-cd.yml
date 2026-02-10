@@ -14,7 +14,7 @@ on:
   
 env:
    AZURE_RG: RG3
-   AZURE_SUBSCRIPTION: <<Subscription ID>>
+   AZURE_SUBSCRIPTION: b743a5b7-0991-435e-b767-569f9077a63f
    AZURE-LOCATION: WestEurope
 
 jobs:
@@ -37,3 +37,15 @@ jobs:
       run: dotnet test --no-build --verbosity normal --configuration ${{ env.configuration }}
     - name: Publish 
       run: dotnet publish --configuration ${{ env.configuration }} --output ${{runner.temp }}/publish
+    - name: Upload the Publish artifact
+      uses: actions/upload-artifact@v4
+      with: 
+         name: publish_artifact
+         path: ${{ runner.temp }}/publish
+         retention-days: 30
+    - name: Upload a Templates Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: templates_artifact
+        path: ./templates/* 
+        retention-days: 30
